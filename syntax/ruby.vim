@@ -32,10 +32,24 @@ endif
 
 " Operators
 if exists("ruby_operators")
+  syn match rubySurroundError ")\|}\|\]\|>\|\<end\>"
+  syn match rubySurroundErrorSquare contained "\]"
+  syn match rubySurroundErrorParen  contained ")"
+  syn match rubySurroundErrorCurly  contained "}"
+  syn match rubySurroundErrorAngle  contained ">"
+  syn match rubySurroundErrorEnd    contained "\<end\>"
+  syn cluster rubySurroundErrorExceptSquare contains=rubySurroundErrorParen,rubySurroundErrorCurly,rubySurroundErrorAngle,rubySurroundErrorEnd
+  syn cluster rubySurroundErrorExceptParen contains=rubySurroundErrorSquare,rubySurroundErrorCurly,rubySurroundErrorAngle,rubySurroundErrorEnd
+  syn cluster rubySurroundErrorExceptCurly contains=rubySurroundErrorSquare,rubySurroundErrorParen,rubySurroundErrorAngle,rubySurroundErrorEnd
+  syn cluster rubySurroundErrorExceptAngle contains=rubySurroundErrorSquare,rubySurroundErrorParen,rubySurroundErrorCurly,rubySurroundErrorEnd
+  syn cluster rubySurroundErrorExceptEnd contains=rubySurroundErrorSquare,rubySurroundErrorParen,rubySurroundErrorCurly,rubySurroundErrorAngle
+
   syn match  rubyOperator	 "\%([~!^&|*/%+-]\|\%(class\s*\)\@<!<<\|<=>\|<=\|\%(<\|\<class\s\+\u\w*\s*\)\@<!<[^<]\@=\|===\|==\|=\~\|>>\|>=\|=\@<!>\|\*\*\|\.\.\.\|\.\.\|::\)"
-  syn match  rubyPseudoOperator  "\%(-=\|/=\|\*\*=\|\*=\|&&=\|&=\|&&\|||=\||=\|||\|%=\|+=\|!\~\|!=\)"
-  syn region rubyBracketOperator matchgroup=rubyOperator start="\%(\w[?!]\=\|[]})]\)\@<=\[\s*" end="\s*]" contains=ALLBUT,@rubyNotTop
+  syn match  rubyPseudoOperator  "\%(-=\|/=\|\*\*=\|\*=\|&&=\|&=\|&&\|||=\||=\|||\|%=\|+=\|!\~\|!=\|=>\)"
+  syn region rubyBracketOperator matchgroup=rubyOperator start="\%(\w[?!]\=\|[]})]\)\@<=\[\s*" end="\s*]" contains=ALLBUT,@rubyNotTop,rubySurroundErrorSquare
 endif
+
+syn region rubyList start="(" end=")" contains=ALLBUT,@rubyNotTop,rubySurroundErrorParen,rubySurroundError transparent contained
 
 " Expression Substitution and Backslash Notation
 syn match rubyStringEscape "\\\\\|\\[abefnrstv]\|\\\o\{1,3}\|\\x\x\{1,2}"						    contained display
@@ -54,10 +68,10 @@ syn match  rubyNoInterpolation	      "\\#\$\W"		      display contained
 
 syn match rubyDelimEscape	"\\[(<{\[)>}\]]" transparent display contained contains=NONE
 
-syn region rubyNestedParentheses    start="("  skip="\\\\\|\\)"  matchgroup=rubyString end=")"	transparent contained
-syn region rubyNestedCurlyBraces    start="{"  skip="\\\\\|\\}"  matchgroup=rubyString end="}"	transparent contained
-syn region rubyNestedAngleBrackets  start="<"  skip="\\\\\|\\>"  matchgroup=rubyString end=">"	transparent contained
-syn region rubyNestedSquareBrackets start="\[" skip="\\\\\|\\\]" matchgroup=rubyString end="\]"	transparent contained
+syn region rubyNestedParentheses    start="("  skip="\\\\\|\\)"  matchgroup=rubyString end=")"	transparent contained contains=rubySurroundErrorCurly,rubySurroundErrorAngle,rubySurroundErrorSquare
+syn region rubyNestedCurlyBraces    start="{"  skip="\\\\\|\\}"  matchgroup=rubyString end="}"	transparent contained contains=rubySurroundErrorParen,rubySurroundErrorAngle,rubySurroundErrorSquare
+syn region rubyNestedAngleBrackets  start="<"  skip="\\\\\|\\>"  matchgroup=rubyString end=">"	transparent contained contains=rubySurroundErrorParen,rubySurroundErrorCurly,rubySurroundErrorSquare
+syn region rubyNestedSquareBrackets start="\[" skip="\\\\\|\\\]" matchgroup=rubyString end="\]"	transparent contained contains=rubySurroundErrorParen,rubySurroundErrorCurly,rubySurroundErrorAngle
 
 " These are mostly Oniguruma ready
 syn region rubyRegexpComment	matchgroup=rubyRegexpSpecial   start="(?#"								  skip="\\)"  end=")"  contained
@@ -210,23 +224,23 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
   syn match  rubyClass	"\<class\>"  nextgroup=rubyClassDeclaration  skipwhite skipnl
   syn match  rubyModule "\<module\>" nextgroup=rubyModuleDeclaration skipwhite skipnl
 
-  syn region rubyMethodBlock start="\<def\>"	matchgroup=rubyDefine end="\%(\<def\_s\+\)\@<!\<end\>" contains=ALLBUT,@rubyNotTop fold
-  syn region rubyBlock	     start="\<class\>"	matchgroup=rubyClass  end="\<end\>"		       contains=ALLBUT,@rubyNotTop fold
-  syn region rubyBlock	     start="\<module\>" matchgroup=rubyModule end="\<end\>"		       contains=ALLBUT,@rubyNotTop fold
+  syn region rubyMethodBlock start="\<def\>"	matchgroup=rubyDefine end="\%(\<def\_s\+\)\@<!\<end\>" contains=ALLBUT,@rubyNotTop,rubySurroundErrorEnd,rubySurroundError fold
+  syn region rubyBlock	     start="\<class\>"	matchgroup=rubyClass  end="\<end\>"		       contains=ALLBUT,@rubyNotTop,rubySurroundErrorEnd,rubySurroundError fold
+  syn region rubyBlock	     start="\<module\>" matchgroup=rubyModule end="\<end\>"		       contains=ALLBUT,@rubyNotTop,rubySurroundErrorEnd,rubySurroundError fold
 
   " modifiers
   syn match rubyConditionalModifier "\<\%(if\|unless\)\>"    display
   syn match rubyRepeatModifier	     "\<\%(while\|until\)\>" display
 
-  syn region rubyDoBlock      matchgroup=rubyControl start="\<do\>" end="\<end\>"                 contains=ALLBUT,@rubyNotTop fold
+  syn region rubyDoBlock      matchgroup=rubyControl start="\<do\>" end="\<end\>"                 contains=ALLBUT,@rubyNotTop,rubySurroundErrorEnd,rubySurroundError fold
   " curly bracket block or hash literal
-  syn region rubyCurlyBlock   start="{" end="}"							  contains=ALLBUT,@rubyNotTop fold
+  syn region rubyCurlyBlock   start="{" end="}"							  contains=ALLBUT,@rubyNotTop,rubySurroundErrorCurly,rubySurroundError fold
   syn region rubyArrayLiteral matchgroup=rubyArrayDelimiter start="\%(\w\|[\]})]\)\@<!\[" end="]" contains=ALLBUT,@rubyNotTop fold
 
   " statements without 'do'
-  syn region rubyBlockExpression       matchgroup=rubyControl	  start="\<begin\>" end="\<end\>" contains=ALLBUT,@rubyNotTop fold
-  syn region rubyCaseExpression	       matchgroup=rubyConditional start="\<case\>"  end="\<end\>" contains=ALLBUT,@rubyNotTop fold
-  syn region rubyConditionalExpression matchgroup=rubyConditional start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+=-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![?!]\)\s*\)\@<=\%(if\|unless\)\>" end="\<end\>" contains=ALLBUT,@rubyNotTop fold
+  syn region rubyBlockExpression       matchgroup=rubyControl	  start="\<begin\>" end="\<end\>" contains=ALLBUT,@rubyNotTop,rubySurroundErrorEnd,rubySurroundError fold
+  syn region rubyCaseExpression	       matchgroup=rubyConditional start="\<case\>"  end="\<end\>" contains=ALLBUT,@rubyNotTop,rubySurroundErrirEnd,rubySurroundError fold
+  syn region rubyConditionalExpression matchgroup=rubyConditional start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+=-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![?!]\)\s*\)\@<=\%(if\|unless\)\>" end="\<end\>" contains=ALLBUT,@rubyNotTop,rubySurroundErrirEnd,rubySurroundError fold
 
   syn match rubyConditional "\<\%(then\|else\|when\)\>[?!]\@!"	contained containedin=rubyCaseExpression
   syn match rubyConditional "\<\%(then\|else\|elsif\)\>[?!]\@!" contained containedin=rubyConditionalExpression
@@ -236,7 +250,7 @@ if !exists("b:ruby_no_expensive") && !exists("ruby_no_expensive")
 
   " statements with optional 'do'
   syn region rubyOptionalDoLine   matchgroup=rubyRepeat start="\<for\>[?!]\@!" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyOptionalDo end="\%(\<do\>\)" end="\ze\%(;\|$\)" oneline contains=ALLBUT,@rubyNotTop
-  syn region rubyRepeatExpression start="\<for\>[?!]\@!" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyRepeat end="\<end\>" contains=ALLBUT,@rubyNotTop nextgroup=rubyOptionalDoLine fold
+  syn region rubyRepeatExpression start="\<for\>[?!]\@!" start="\%(\%(^\|\.\.\.\=\|[{:,;([<>~\*/%&^|+-]\|\%(\<[_[:lower:]][_[:alnum:]]*\)\@<![!=?]\)\s*\)\@<=\<\%(until\|while\)\>" matchgroup=rubyRepeat end="\<end\>" contains=ALLBUT,@rubyNotTop,rubySurroundErrirEnd,rubySurroundError nextgroup=rubyOptionalDoLine fold
 
   if !exists("ruby_minlines")
     let ruby_minlines = 50
@@ -297,6 +311,7 @@ syn match rubyKeywordAsMethod "\%(\%(\.\@<!\.\)\|::\)\_s*\%(public\|require\|rai
 syn region rubyData matchgroup=rubyDataDirective start="^__END__$" end="\%$" fold
 
 syn cluster Spell contains=rubyComment
+
 
 hi def link rubyClass			rubyDefine
 hi def link rubyModule			rubyDefine
@@ -366,6 +381,16 @@ hi def link rubyRegexp			rubyString
 hi def link rubyInvalidVariable		Error
 hi def link rubyError			Error
 hi def link rubySpaceError		rubyError
+hi def link rubySurroundError		rubyError
+
+hi def link rubySurroundErrorParen		rubySurroundError
+hi def link rubySurroundErrorSquare             rubySurroundError
+hi def link rubySurroundErrorCurly		rubySurroundError
+hi def link rubySurroundErrorAngle		rubySurroundError
+"This one doesn't work at present
+"hi def link rubySurroundErrorEnd		rubySurroundError
+
+
 
 let b:current_syntax = "ruby"
 
