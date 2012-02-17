@@ -4,3 +4,5 @@ function! TrimWhite()
   silent! g/^[\n\s]*\%$/d
   call winrestview(view)
 endfunction
+
+command! TrimWhite :call TrimWhite()
