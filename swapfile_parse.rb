@@ -44,11 +44,15 @@ module Vim
       end
 
       def owner_running?
+        Vim::message("Checking if #{@parsed[:pid]} is running...")
         Process::kill(0, @parsed[:pid])
+        Vim::message("#{@parsed[:pid]} is running.")
         return true
       rescue Errno::ESRCH
+        Vim::message("#{@parsed[:pid]} is not running.")
         return false
-      rescue
+      rescue ex
+        Vim::message("Problem: #{ex.inspect}")
         return true
       end
 
@@ -76,26 +80,29 @@ module Vim
       #:help v:swapchoice
       def swap_decision(letter)
         Vim::message("Setting swapchoice to: #{letter}")
-        Vim::command("echo 'Deciding: #{letter}'")
         Vim::command("let v:swapchoice='#{letter}'")
       end
 
       def be_blase
+        if @parser.owner_running?
+          Vim::message("Owner is running")
+          swap_decision ''
+          return
+        end
+
         if @parser.outdated?
+          Vim::message("Owner not running, and swapfile is outdated")
           swap_decision "d"
           return
         end
 
         if !@parser.dirty?
+          Vim::message("Owner not running, swapfile current, but clean")
           swap_decision "d"
           return
         end
 
-        if !@parser.owner_running?
-          swap_decision ''
-          return
-        end
-
+        Vim::message("Owner not running, swapfile is current and dirty")
         swap_decision 'r'
       end
     end
