@@ -6,3 +6,8 @@ function! TrimWhite()
 endfunction
 
 command! TrimWhite :call TrimWhite()
+
+if !exists("trimwhite_au")
+  let trimwhite_au = 1
+  autocmd BufWritePre *.rb,*.haml,*.js,*.rake,Rakefile* :call TrimWhite()
+endif

@@ -20,4 +20,7 @@ endif
 
 let colors_name = "default"
 
+highlight Search NONE
+highlight Search cterm=bold ctermfg=10
+
 " vim: sw=2

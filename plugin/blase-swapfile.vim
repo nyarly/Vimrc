@@ -1,5 +1,6 @@
 function SwapfileAutocmd()
-  let decide_ruby = "ruby require '" . findfile("swapfile_parse.rb", &runtimepath) ."'; Vim::Swapfile::Decider.new('" . v:swapname . "').be_blase"
+  echo findfile("swapfile_parse.rb", &runtimepath)
+  let decide_ruby = "ruby require '" . fnamemodify(findfile("swapfile_parse.rb", &runtimepath), ":p") ."'; Vim::Swapfile::Decider.new('" . v:swapname . "').be_blase"
   exec decide_ruby
 endf
 
