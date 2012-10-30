@@ -1,0 +1,691 @@
+snippet head "normal header"
+%%% @author  `!v g:snips_author` `!v g:my_email_addr`
+%%% @copyright (C) `!v strftime("%Y")`, `!v g:snips_author`. All Rights Reserved.
+%%% @doc
+%%%		${1}
+%%% @end
+%%% Created :  `!v strftime("%a %b %d %H:%M:%S %Y")` by `!v g:snips_author`
+-module(`!v Filename()`).
+endsnippet
+
+snippet head "large header"
+%%%-------------------------------------------------------------------
+%%% $Id: erlang.snippets,v 1.1 2011/02/19 16:36:37 micro Exp $
+%%% @author  `!v g:snips_author` `!v g:my_email_addr`
+%%% @copyright (C) `!v strftime("%Y")` `!v g:snips_author`. All Rights Reserved.
+%%% @doc
+%%%		${1}
+%%% @end
+%%% Created :  `!v strftime("%a %b %d %H:%M:%S %Y")` by `!v g:snips_author`
+%%%-------------------------------------------------------------------
+-module(`!v Filename()`).
+-vsn('${2:version}').
+-author('`!v g:my_email_addr`').
+-doc("").
+-purpose("").
+-include("../include/`!v Filename()`.hrl").
+${3}
+-export([
+]).
+%% Macros
+%% used for debugging
+-define(L(Obj), io:format("LOG ~w ~p\n", [?LINE, Obj])).
+endsnippet
+
+snippet disc "disc"
+%%% THE SOFTWARE IS PROVIDED "AS-IS" AND WITHOUT WARRANTY OF ANY KIND, EXPRESS,
+%%% IMPLIED OR OTHERWISE, INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF
+%%% MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+%%% IN NO EVENT SHALL ${1:`!v g:snips_author`} BE LIABLE FOR ANY SPECIAL, INCIDENTAL, INDIRECT OR
+%%% CONSEQUENTIAL DAMAGES OF ANY KIND, OR ANY DAMAGES WHATSOEVER RESULTING FROM
+%%% LOSS OF USE, DATA OR PROFITS, WHETHER OR NOT ADVISED OF THE POSSIBILITY OF
+%%% DAMAGE, AND ON ANY THEORY OF LIABILITY,  ARISING OUT OF OR IN CONNECTION WITH
+%%% THE USE OR PERFORMANCE OF THIS SOFTWARE.
+%%% See the file COPYING
+endsnippet
+
+snippet mod "mod"
+-module(`!v Filename()`).
+endsnippet
+
+snippet auth "auth"
+-author("`!v g:snips_author` `!v g:my_email_addr`").
+endsnippet
+
+snippet inc "app"
+-include_lib("${1:app}/include/${2:$1}.hrl").${3}
+endsnippet
+
+snippet inc "?MODULE.hrl"
+-include("${1:`!v Filename("$1.hrl")`}").${3}
+endsnippet
+
+snippet exp "specific"
+-export([${1:exports}]).${3}
+endsnippet
+
+snippet exp "all"
+-compile(export_all).${1}
+endsnippet
+
+snippet vsn "vsn"
+-vsn(${1:version})
+endsnippet
+
+snippet imp "general"
+-import(${1:module}, [${2:func}/${3:arity}]).${4}
+endsnippet
+
+snippet imp "lists"
+-import(lists, [flatten/1, member/2, sort/1, map/2, foldl/3, foreach/2]).
+endsnippet
+
+snippet rec "Record"
+-record(${1:name}, {
+	$0
+}).
+endsnippet
+
+snippet rf "Record Field"
+${2:field}${3: = ${4:value}}
+endsnippet
+
+snippet lc "list comprehension"
+[ ${1:X} || $1 <- ${2:L} ]${3}
+endsnippet
+
+snippet lc "map"
+[ ${1:X} || $1 <- ${2:L} ]${3}
+endsnippet
+
+snippet lc "bit string comprehension"
+<< <<${1:X}>> || <<${2:$1}>> <= <<${3:expr}>> >>${4}
+endsnippet
+
+snippet ht "ht"
+[${1:H}|${2:T}]${0}
+endsnippet
+
+snippet map "map"
+lists:map(fun(${1:X}) -> $1 end, ${2:L})
+endsnippet
+
+snippet for "for"
+lists:foreach(fun(${1:X}) -> $1 end, ${2:L})
+endsnippet
+
+snippet iof "iof"
+io:format("${1:string}~n", [${2:values}])${3},
+endsnippet
+
+snippet funspec "Function doc header"
+%%--------------------------------------------------------------------
+%% @doc:	${1:desription}
+%% @spec:	${2:function}() -> ${3:return type}.
+%% @end
+%%--------------------------------------------------------------------
+-spec($2() -> $3 ).
+endsnippet
+
+snippet funspec "function(X) doc header"
+%%--------------------------------------------------------------------
+%% @doc:	${1:desription}
+%% @spec:	${2:function}(${3:arg}::${4:type} ) -> ${5:return type}.
+%% @end
+%%--------------------------------------------------------------------
+-spec($2($4) -> $5 ).
+endsnippet
+
+snippet fun "anonymous"
+fun(${1:arg}) -> ${2:body} end
+endsnippet
+
+snippet if "if"
+if 
+	${1:guard} ->
+		${2:action}
+end
+endsnippet
+
+snippet case "case"
+case  ${1:condition} of
+	${2:pattern} ->
+		${3:expr};
+	${4:pattern} ->
+		${5:expr}
+end${6}
+endsnippet
+
+snippet send "send"
+${1:pid} ! ${2:expr1}.
+endsnippet
+
+snippet recv "receive"
+receive
+	${1:pattern1} ->
+		${2:expr1}
+end
+endsnippet
+
+snippet recv "receive loop"
+loop(${1:State}) ->
+	receive
+		${2:Pattern1} ->
+			loop(${3:NewState})
+	end.
+endsnippet
+
+snippet recv "receive after"
+receive
+	${1:pattern1} ->
+		${2:expr1}
+after 
+	${3:Timeout} ->
+		${4:expr2}
+end
+endsnippet
+
+snippet spawn "mfa"
+-export([$2/${4:0}]).
+spawn(${1:?MODULE}, ${2:function}, [${3}]).
+endsnippet
+
+snippet spawn "fun"
+spawn(fun (${1:X}) -> ${2:body} end)
+endsnippet
+
+snippet reg "pid"
+register(${1:?MODULE}, ${2:Pid})${3}
+endsnippet
+
+snippet reg "spawn mfa"
+register(${1:?MODULE}, spawn($1, ${2:function}, [${3:args}]))${4}
+endsnippet
+
+snippet t "t"
+`!v TriggerSnippet()`
+endsnippet
+
+snippet emake "emake"
+{ './src/*',
+	[{i, "./include"},
+		{outdir, "./ebin"},
+		%%warn_obsolete_guard, warn_unused_import, warn_shadow_vars, warn_export_vars, strong_validation, report,
+		debug_info
+	]
+}.
+endsnippet
+
+snippet .app ".app"
+{application, ${1:Application}, [
+	{description,  "${2:Description}"},
+	{id,           "${3:Id}"},
+	{vsn,          "${4:Vsn}"},
+	{modules,      [$1, $1_app, ${5:Modules}]},
+	{registered,   [${6:Names}]},
+	{included_applications, [${7:Apps}]},
+	{applications, [kernel, stdlib, ${8:Apps}]},
+	{env,          [{${9:par}, ${10:val}}]},
+	{mod,          {$1_app, [${11:args}]}},
+	{start_phases, [{${11:Phase}, ${12:PhaseArgs}}]}
+]}.
+endsnippet
+
+snippet otp "small server"
+%%%-------------------------------------------------------------------
+%%% @author  `!v g:snips_author` `!v g:my_email_addr`
+%%% @copyright (C) `!v strftime("%Y")` `!v g:snips_author`. All Rights Reserved.
+%%% @doc
+%%%		${1}
+%%% @end
+%%% Created :  `!v strftime("%a %b %d %H:%M:%S %Y")` by `!v g:snips_author`
+%%%-------------------------------------------------------------------
+-module(`!v Filename()`).
+-export([start/0, init/1]).
+start() ->
+	spawn(, init, [self()]).
+init(From) ->
+	loop(From).
+loop(From) ->
+	receive
+		_ ->
+			loop(From)
+	end.
+endsnippet
+
+snippet otp "gen_server"
+-module(`!v Filename()`).
+-behaviour(gen_server).
+%% API
+-export([start_link/0]).
+%% gen_server callbacks
+-export([init/1, handle_call/3, handle_cast/2, handle_info/2,
+	terminate/2, code_change/3]).
+-define(SERVER, ?MODULE). 
+-record(state, {}).
+start_link() ->
+	gen_server:start_link({local, ?SERVER}, ?MODULE, [], []).
+%%%===================================================================
+%%% gen_server callbacks
+%%%===================================================================
+init([]) ->
+	{ok, #state{}}.
+handle_call(_Request, _From, State) ->
+	Reply = ok,
+	{reply, Reply, State}.
+handle_cast(_Msg, State) ->
+	{noreply, State}.
+handle_info(_Info, State) ->
+	{noreply, State}.
+terminate(_Reason, _State) ->
+	ok.
+code_change(_OldVsn, State, _Extra) ->
+	{ok, State}.
+%%%===================================================================
+%%% Internal functions
+%%%===================================================================
+endsnippet
+
+snippet otp "gen_event"
+%%%-------------------------------------------------------------------
+%%% @author  `!v g:snips_author` `!v g:my_email_addr`
+%%% @copyright (C) `!v strftime("%Y")` `!v g:snips_author`. All Rights Reserved.
+%%% @doc
+%%%		${1}
+%%% @end
+%%% Created :  `!v strftime("%a %b %d %H:%M:%S %Y")` by `!v g:snips_author`
+%%%-------------------------------------------------------------------
+-module(`!v Filename()`).
+-behaviour(gen_event).
+%% API
+-export([start_link/0, add_handler/0]).
+%% gen_event callbacks
+-export([init/1, handle_event/2, handle_call/2, 
+	handle_info/2, terminate/2, code_change/3]).
+-define(SERVER, ?MODULE). 
+-record(state, {}).
+%%%===================================================================
+%%% Module API
+%%%===================================================================
+start_link() ->
+	gen_event:start_link({local, ?SERVER}).
+add_handler() ->
+	gen_event:add_handler(?SERVER, ?MODULE, []).
+%%%===================================================================
+%%% gen_event callbacks
+%%%===================================================================
+init([]) ->
+	{ok, #state{}}.
+handle_event(_Event, State) ->
+	{ok, State}.
+	Reply = ok,
+	{ok, Reply, State}.
+handle_info(_Info, State) ->
+	{ok, State}.
+terminate(_Reason, _State) ->
+	ok.
+code_change(_OldVsn, State, _Extra) ->
+	{ok, State}.
+%%%===================================================================
+%%% Internal functions
+%%%===================================================================
+endsnippet
+
+snippet otp "gen_fsm"
+%%%-------------------------------------------------------------------
+%%% @author  `!v g:snips_author` `!v g:my_email_addr`
+%%% @copyright (C) `!v strftime("%Y")` `!v g:snips_author`. All Rights Reserved.
+%%% @doc
+%%%		${1}
+%%% @end
+%%% Created :  `!v strftime("%a %b %d %H:%M:%S %Y")` by `!v g:snips_author`
+%%%-------------------------------------------------------------------
+-module(`!v Filename()`).
+-behaviour(gen_fsm).
+%% API
+-export([start_link/0]).
+%% gen_fsm callbacks
+-export([init/1, state_name/2, state_name/3, handle_event/3,
+	handle_sync_event/4, handle_info/3, terminate/3, code_change/4]).
+-define(SERVER, ?MODULE).
+-record(state, {}).
+%%%===================================================================
+%%% API
+%%%===================================================================
+start_link() ->
+	gen_fsm:start_link({local, ?SERVER}, ?MODULE, [], []).
+%%%===================================================================
+%%% gen_fsm callbacks
+%%%===================================================================
+init([]) ->
+	{ok, state_name, #state{}}.
+state_name(_Event, State) ->
+	{next_state, state_name, State}.
+state_name(_Event, _From, State) ->
+	Reply = ok,
+	{reply, Reply, state_name, State}.
+handle_event(_Event, StateName, State) ->
+	{next_state, StateName, State}.
+handle_sync_event(_Event, _From, StateName, State) ->
+	Reply = ok,
+	{reply, Reply, StateName, State}.
+handle_info(_Info, StateName, State) ->
+	{next_state, StateName, State}.
+terminate(_Reason, _StateName, _State) ->
+	ok.
+code_change(_OldVsn, StateName, State, _Extra) ->
+	{ok, StateName, State}.
+%%%===================================================================
+%%% Internal functions
+%%%===================================================================
+endsnippet
+
+snippet otp "supervisor"
+%%%-------------------------------------------------------------------
+%%% @author  `!v g:snips_author` `!v g:my_email_addr`
+%%% @copyright (C) `!v strftime("%Y")` `!v g:snips_author`. All Rights Reserved.
+%%% @doc
+%%%		${1}
+%%% @end
+%%% Created :  `!v strftime("%a %b %d %H:%M:%S %Y")` by `!v g:snips_author`
+%%%-------------------------------------------------------------------
+-module(`!v Filename()`).
+-behaviour(supervisor).
+%% API
+-export([start_link/0]).
+%% Supervisor callbacks
+-export([init/1]).
+-define(SERVER, ?MODULE).
+%%%===================================================================
+%%% API functions
+%%%===================================================================
+start_link() ->
+	supervisor:start_link({local, ?SERVER}, ?MODULE, []).
+%%%===================================================================
+%%% Supervisor callbacks
+%%%===================================================================
+init([]) ->
+	RestartStrategy = one_for_one,
+	MaxRestarts = 1000,
+	MaxSecondsBetweenRestarts = 3600,
+	SupFlags = {RestartStrategy, MaxRestarts, MaxSecondsBetweenRestarts},
+	Restart = permanent,
+	Shutdown = 2000,
+	Type = worker,
+	AChild = {'AName', {'AModule', start_link, []},
+		Restart, Shutdown, Type, ['AModule']},
+	{ok, {SupFlags, [AChild]}}.
+%%%===================================================================
+%%% Internal functions
+%%%===================================================================
+endsnippet
+
+snippet otp "supervisor_bridge"
+%%%-------------------------------------------------------------------
+%%% @author  `!v g:snips_author` `!v g:my_email_addr`
+%%% @copyright (C) `!v strftime("%Y")` `!v g:snips_author`. All Rights Reserved.
+%%% @doc
+%%%		${1}
+%%% @end
+%%% Created :  `!v strftime("%a %b %d %H:%M:%S %Y")` by `!v g:snips_author`
+%%%-------------------------------------------------------------------
+-module(`!v Filename()`).
+-behaviour(supervisor_bridge).
+%% API
+-export([start_link/0]).
+%% supervisor_bridge callbacks
+-export([init/1, terminate/2]).
+-define(SERVER, ?MODULE).
+-record(state, {}).
+%%%===================================================================
+%%% API
+%%%===================================================================
+start_link() ->
+	supervisor_bridge:start_link({local, ?SERVER}, ?MODULE, []).
+%%%===================================================================
+%%% supervisor_bridge callbacks
+%%%===================================================================
+init([]) ->
+	case 'AModule':start_link() of
+	{ok, Pid} ->
+		{ok, Pid, #state{}};
+	Error ->
+		Error
+		end.
+terminate(Reason, State) ->
+	'AModule':stop(),
+	ok.
+%%%===================================================================
+%%% Internal functions
+%%%===================================================================
+endsnippet
+
+snippet otp "application"
+%%%-------------------------------------------------------------------
+%%% @author  `!v g:snips_author` `!v g:my_email_addr`
+%%% @copyright (C) `!v strftime("%Y")` `!v g:snips_author`. All Rights Reserved.
+%%% @doc
+%%%		${1}
+%%% @end
+%%% Created :  `!v strftime("%a %b %d %H:%M:%S %Y")` by `!v g:snips_author`
+%%%-------------------------------------------------------------------
+-module(`!v Filename()`).
+-behaviour(application).
+%% Application callbacks
+-export([start/2, stop/1]).
+%%%===================================================================
+%%% Application callbacks
+%%%===================================================================
+start(_StartType, _StartArgs) ->
+	case 'TopSupervisor':start_link() of
+	{ok, Pid} ->
+		{ok, Pid};
+	Error ->
+		Error
+		end.
+stop(_State) ->
+	ok.
+%%%===================================================================
+%%% Internal functions
+%%%===================================================================
+endsnippet
+
+snippet otp "library"
+%%%-------------------------------------------------------------------
+%%% @author  `!v g:snips_author` `!v g:my_email_addr`
+%%% @copyright (C) `!v strftime("%Y")` `!v g:snips_author`. All Rights Reserved.
+%%% @doc
+%%%		${1}
+%%% @end
+%%% Created :  `!v strftime("%a %b %d %H:%M:%S %Y")` by `!v g:snips_author`
+%%%-------------------------------------------------------------------
+-module(`!v Filename()`).
+%% API
+-export([]).
+%%%===================================================================
+%%% API
+%%%===================================================================
+%%--------------------------------------------------------------------
+%% @doc
+%% @spec
+%% @end
+%%--------------------------------------------------------------------
+%%%===================================================================
+%%% Internal functions
+%%%===================================================================
+endsnippet
+
+snippet otp "corba_callback"
+%%%-------------------------------------------------------------------
+%%% @author  `!v g:snips_author` `!v g:my_email_addr`
+%%% @copyright (C) `!v strftime("%Y")` `!v g:snips_author`. All Rights Reserved.
+%%% @doc
+%%%		${1}
+%%% @end
+%%% Created :  `!v strftime("%a %b %d %H:%M:%S %Y")` by `!v g:snips_author`
+%%%-------------------------------------------------------------------
+-module(`!v Filename()`).
+%% Include files
+%% API
+-export([]).
+%% Corba callbacks
+-export([init/1, terminate/2, code_change/3]).
+-record(state, {}).
+%%%===================================================================
+%%% Corba callbacks
+%%%===================================================================
+init([]) ->
+	{ok, #state{}}.
+terminate(_Reason, _State) ->
+	ok.
+code_change(_OldVsn, State, _Extra) ->
+	{ok, State}.
+%%%===================================================================
+%%% Internal functions
+%%%===================================================================
+endsnippet
+
+snippet test "small CT suite"
+%%%-------------------------------------------------------------------
+%%% @author  `!v g:snips_author` `!v g:my_email_addr`
+%%% @copyright (C) `!v strftime("%Y")` `!v g:snips_author`. All Rights Reserved.
+%%% @doc
+%%%		${1}
+%%% @end
+%%% Created :  `!v strftime("%a %b %d %H:%M:%S %Y")` by `!v g:snips_author`
+%%%-------------------------------------------------------------------
+-module(`!v Filename()`).
+-compile(export_all).
+-include_lib("common_test/include/ct.hrl").
+suite() ->
+	[{timetrap,{seconds,30}}].
+init_per_suite(Config) ->
+	Config.
+end_per_suite(_Config) ->
+	ok.
+init_per_group(_GroupName, Config) ->
+	Config.
+end_per_group(_GroupName, _Config) ->
+	ok.
+init_per_testcase(_TestCase, Config) ->
+	Config.
+end_per_testcase(_TestCase, _Config) ->
+	ok.
+groups() ->
+	[].
+all() -> 
+	[my_test_case].
+my_test_case() -> 
+	[].
+my_test_case(_Config) -> 
+	ok.
+endsnippet
+
+snippet test "large CT suite"
+%%%-------------------------------------------------------------------
+%%% @author  `!v g:snips_author` `!v g:my_email_addr`
+%%% @copyright (C) `!v strftime("%Y")` `!v g:snips_author`. All Rights Reserved.
+%%% @doc
+%%%		${1}
+%%% @end
+%%% Created :  `!v strftime("%a %b %d %H:%M:%S %Y")` by `!v g:snips_author`
+%%%-------------------------------------------------------------------
+-module(`!v Filename()`).
+%% Note: This directive should only be used in test suites.
+-compile(export_all).
+-include_lib("common_test/include/ct.hrl").
+%%--------------------------------------------------------------------
+%% COMMON TEST CALLBACK FUNCTIONS
+%%--------------------------------------------------------------------
+suite() ->
+	[{timetrap,{minutes,10}}].
+init_per_suite(Config) ->
+	Config.
+end_per_suite(_Config) ->
+	ok.
+init_per_group(_GroupName, Config) ->
+	Config.
+end_per_group(_GroupName, _Config) ->
+	ok.
+init_per_testcase(_TestCase, Config) ->
+	Config.
+end_per_testcase(_TestCase, _Config) ->
+	ok.
+groups() ->
+	[].
+all() -> 
+	[my_test_case].
+%%--------------------------------------------------------------------
+%% TEST CASES
+%%--------------------------------------------------------------------
+my_test_case() -> 
+	[].
+my_test_case(_Config) -> 
+	ok.
+endsnippet
+
+snippet test "TS test suite"
+%%%-------------------------------------------------------------------
+%%% @author  `!v g:snips_author` `!v g:my_email_addr`
+%%% @copyright (C) `!v strftime("%Y")` `!v g:snips_author`. All Rights Reserved.
+%%% @doc
+%%%		${1}
+%%% @end
+%%% Created :  `!v strftime("%a %b %d %H:%M:%S %Y")` by `!v g:snips_author`
+%%%-------------------------------------------------------------------
+-module(`!v Filename()`).
+%% Note: This directive should only be used in test suites.
+-compile(export_all).
+-include_lib("test_server/include/test_server.hrl").
+%%--------------------------------------------------------------------
+%% TEST SERVER CALLBACK FUNCTIONS
+%%--------------------------------------------------------------------
+init_per_suite(Config) ->
+	Config.
+end_per_suite(_Config) ->
+	ok.
+init_per_testcase(_TestCase, Config) ->
+	Config.
+end_per_testcase(_TestCase, _Config) ->
+	ok.
+all(doc) ->
+	["Describe the main purpose of this suite"];
+all(suite) -> 
+	[a_test_case].
+%%--------------------------------------------------------------------
+%% TEST CASES
+%%--------------------------------------------------------------------
+a_test_case(doc) -> 
+	["Describe the main purpose of this test case"];
+a_test_case(suite) -> 
+	[];
+a_test_case(Config) when is_list(Config) -> 
+	ok.
+endsnippet
+
+snippet test "eunit"
+%%%-------------------------------------------------------------------
+%%% @author  `!v g:snips_author` `!v g:my_email_addr`
+%%% @copyright (C) `!v strftime("%Y")` `!v g:snips_author`. All Rights Reserved.
+%%% @doc
+%%%		${1}
+%%% @end
+%%% Created :  `!v strftime("%a %b %d %H:%M:%S %Y")` by `!v g:snips_author`
+%%%-------------------------------------------------------------------
+-module(`!v Filename()`).
+-include_lib("eunit/include/eunit.hrl").
+endsnippet
+
+snippet wmres "Web Machine resource"
+-export([init/1]).
+-include_lib("webmachine/include/webmachine.hrl").
+
+init(Config) ->
+	{ok, Config}.
+endsnippet
+
+snippet /wmfun?/ "Web Machine resource function" r
+${1:${VISUAL:function}}(ReqData, Context) ->
+	Result = ${2:true},
+	{Result, ReqData, Context}.
+endsnippet

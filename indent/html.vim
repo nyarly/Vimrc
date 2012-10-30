@@ -33,3 +33,9 @@ let b:commentRE      = b:blockCommentRE
 let b:stringRE            = 'htmlString'
 let b:singleQuoteStringRE = b:stringRE
 let b:doubleQuoteStringRE = b:stringRE
+
+fun! <SID>HtmlIndentPush(tag)                                                                                                             
+  let g:html_indent_tags = g:html_indent_tags.'\|'.a:tag                                                                            
+endfun 
+
+call <SID>HtmlIndentPush('section')

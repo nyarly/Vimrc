@@ -3,7 +3,10 @@ setlocal ts=2
 setlocal formatoptions=croqwal
 setlocal expandtab
 
-let b:surround_100 = "do \r end"
+let b:surround_{char2nr("d")} = "do \r end"
+let b:surround_{char2nr("-")} = "<% \r %>"
+let b:surround_{char2nr("=")} = "<%= \r %>"
+
 let ruby_minlines = 150
 set nofoldenable
 set foldlevel=3

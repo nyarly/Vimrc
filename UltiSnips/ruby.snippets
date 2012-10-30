@@ -1,0 +1,159 @@
+snippet collect "collect"
+collect do |${1:item}|
+	${2}
+end
+endsnippet
+
+snippet detect "detect"
+detect do |${1:item}|
+	${2}
+end
+endsnippet
+
+snippet map "map"
+map do |${1:item}|
+	${2}
+end
+endsnippet
+
+snippet m "m"
+map {|${1:item}| ${2}}
+endsnippet
+
+snippet find "find"
+find do |${1:item}|
+	${2}
+end
+endsnippet
+
+snippet find_all "find_all"
+find_all do |${1:item}|
+	${2}
+end
+endsnippet
+
+snippet each "each"
+each do |${1:item}|
+	${2}
+end
+endsnippet
+
+snippet each_slice "each_slice"
+each_slice(${1:2}) do |${1:array}|
+	${2}
+end
+endsnippet
+
+snippet each_cons "each_cons"
+each_cons(${1:2}) do |${1:array}|
+	${2}
+end
+endsnippet
+
+snippet each_with_index "each_with_index"
+each_with_index do |${1:item}, ${2:index}|
+	${3}
+end
+endsnippet
+
+snippet inject "inject"
+inject${1} do |${2:memo}, ${3:item}|
+	${4}
+end
+endsnippet
+
+snippet dbg "dbg"
+require 'ruby-debug'; debugger
+endsnippet
+
+snippet desc "describe Classname"
+describe ${1:`!v substitute(substitute(Filename(),'_spec$','',''), '\v%(^|_)(.)', '\u\1', 'g')`} do
+	${2}
+end
+endsnippet
+
+snippet desc "describe 'some other thing'"
+describe "${1}" do
+	${2}
+end
+endsnippet
+
+snippet desc "describe Classname, 'special case'"
+describe ${1:`!v substitute(substitute(Filename(),'_spec$','',''), '\v%(^|_)(.)', '\u\1', 'g')`}, "${2}" do
+	${3}
+end
+endsnippet
+
+snippet !desc"! "describe 'special case'"
+describe "${1}" do
+	${2}
+end
+endsnippet
+
+snippet descc "descc"
+describe ${1:`!v substitute(substitute(Filename(),'_spec$','',''), '\v%(^|_)(.)', '\u\1', 'g')`} do
+	${2}
+end
+endsnippet
+
+snippet !descc"!
+describe ${1:`!v substitute(substitute(Filename(),'_spec$','',''), '\v%(^|_)(.)', '\u\1', 'g')`}, "${2}" do
+	${3}
+end
+endsnippet
+
+snippet bef "before :each"
+before :each do
+	${1}
+end
+endsnippet
+
+snippet befa "befa"
+before :all do
+	${1}
+end
+endsnippet
+
+snippet af "af"
+after :each do
+	${1}
+end
+endsnippet
+
+snippet afa "afa"
+after :all do
+	${1}
+end
+endsnippet
+
+snippet it "it"
+it "should ${1}" do
+	${2}
+end
+endsnippet
+
+snippet isbl "isbl"
+it_should_behave_like "${1}"
+endsnippet
+
+snippet sh "sh"
+should 
+endsnippet
+
+snippet sn "sn"
+should_not 
+endsnippet
+
+snippet bn "bn"
+be_nil
+endsnippet
+
+snippet beg "beg"
+begin
+	${2}
+rescue ${1:Exception} => ex
+	${3}
+end
+endsnippet
+
+
