@@ -1,4 +1,12 @@
-Powerline*.cache
+*.sw?
+*.un?
+*.vba
+*.zip
+*.gz
+vimball.txt
+*.orig
+tags
 .netrwhist
-.*sw?
+Powerline_distinguished_distinguished_*
 problem_files/
+bundle/

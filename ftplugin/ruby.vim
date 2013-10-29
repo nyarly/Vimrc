@@ -17,10 +17,13 @@ setlocal spell
 setlocal spelllang=en_us
 
 
-let s:ruby_path_prefix = ".,,lib,app,config/initializer,spec,test,"
-let s:rg_get_paths_code = "require 'rubygems'; Gem::path.map{|path| File::join(path, 'gems/**2')}.join(',')"
+let s:Gemfile = findfile("Gemfile", expand('<afile>:h').';'.$HOME)
+let s:libdir = fnamemodify(s:Gemfile,":h")
 
-let s:b_get_paths_code = "Dir.chdir('".expand('<afile>:h')."'){ require 'bundler'; Bundler.bundle_path + 'gems/**2' }"
+let s:ruby_path_prefix = ".,,lib,app,config/initializer,spec,test,"
+let s:rg_get_paths_code = "require 'rubygems'; (['".s:libdir."'] + Gem::path.map{|path| File::join(path, 'gems/**')}).join(',')"
+
+let s:b_get_paths_code = "Dir.chdir('".s:libdir."'){ require 'bundler'; ['".s:libdir."', Bundler.bundle_path + 'gems/**' }"
 
 if has("ruby")
   let let_prefix = "ruby VIM::command( 'let g:ruby_path = \"%s\"' % ("

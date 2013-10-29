@@ -25,7 +25,7 @@ function! s:SplitModule()
   endif
   let indent = matchlist(getline("."), '^\(\s*\)\S')[1]
 
-  call search('^\(' . indent . '\)\@<!\S', 'bW')
+  call search('^\s*\(' . indent . '\)\@<!\S', 'bW')
 
   let moduleLine = getline('.')
   let moduleIndent = matchlist(getline("."), '^\(\s*\)\S')[1]
@@ -35,11 +35,13 @@ function! s:SplitModule()
   call append(line('.'), moduleLine)
   call append(line('.'), "")
   call append(line('.'), moduleIndent . "end")
+  normal dd
+  normal j
 endfunction
 
-command -nargs=1 -complete=file -range -bar SnipToFile <line1>,<line2>call s:EmitRangeToFile(<f-args>)
+command! -nargs=1 -complete=file -range -bar SnipToFile <line1>,<line2>call s:EmitRangeToFile(<f-args>)
 
-command SplitMod :call s:SplitModule()
+command! SplitMod :call s:SplitModule()
 
 vmap <Leader>E :SnipToFile<Space>
 nmap <Leader>S :SplitMod<CR>

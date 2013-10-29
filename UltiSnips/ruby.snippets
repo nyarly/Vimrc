@@ -1,6 +1,15 @@
+snippet req "require" !b
+require '${1}'
+endsnippet
 snippet collect "collect"
 collect do |${1:item}|
 	${2}
+end
+endsnippet
+
+snippet memo "Memoized function" !b
+def ${1}
+  @$1 ||= ${0:`!v substitute(substitute(@", '^\s\+','', ""), '\s\+$', '', "")`}
 end
 endsnippet
 
@@ -8,6 +17,18 @@ snippet detect "detect"
 detect do |${1:item}|
 	${2}
 end
+endsnippet
+
+snippet vcr "vcr metadata"
+:vcr => {${1}}
+endsnippet
+
+snippet pfl "p file,line"
+puts "\n#{__FILE__}:#{__LINE__} => #{${1:nil}.inspect}"
+endsnippet
+
+snippet tpfl "tapped puts with file,line" i
+.tap{|value| puts "#{__FILE__}:#{__LINE__} => #{${1:value}.inspect}"}
 endsnippet
 
 snippet map "map"
@@ -137,11 +158,11 @@ it_should_behave_like "${1}"
 endsnippet
 
 snippet sh "sh"
-should 
+should
 endsnippet
 
 snippet sn "sn"
-should_not 
+should_not
 endsnippet
 
 snippet bn "bn"
@@ -155,5 +176,3 @@ rescue ${1:Exception} => ex
 	${3}
 end
 endsnippet
-
-

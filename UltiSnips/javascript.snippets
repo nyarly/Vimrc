@@ -13,14 +13,32 @@ snippet gr "" b
 goog.require('${1}');
 endsnippet
 
-snippet fun "fun"
-function ${1:function_name} (${2:argument}) {
+snippet fun "function expression"
+function ${1:function_name}(${2:argument}) {
 	${3:// body...}
 }
 endsnippet
 
-snippet f "f"
-function(${1}) {${2}}
+snippet fn "inline function" i
+function(${1}){${2}}
+endsnippet
+
+snippet :f ":f"
+${1:method_name}: function(${2:attribute}) {
+	${4}
+}${3:,}
+endsnippet
+
+snippet .f ".name = function" i
+.${1:method_name} = function(${2:args}){
+	${3}
+};
+endsnippet
+
+snippet =f "= function" i
+= function(${1:args}){
+	${2}
+};
 endsnippet
 
 snippet if "if"
@@ -76,12 +94,6 @@ snippet do "do"
 do {
 	${2:/* code */}
 } while (${1:/* condition */})
-endsnippet
-
-snippet :f ":f"
-${1:method_name}: function(${2:attribute}) {
-	${4}
-}${3:,}
 endsnippet
 
 snippet timeout "timeout"

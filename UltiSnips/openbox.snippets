@@ -1,0 +1,19 @@
+snippet menu "Menu blox" !b
+<menu id="${2:${1/(\w+)(\s*)/\L$1\E(?2:-::)/g}}" label="${1}">
+  $0
+</menu>
+endsnippet
+
+snippet item "Menu item" !b
+<item label="$1">
+  $0
+</item>
+endsnippet
+
+snippet exe "Description" !b
+<item label="$1">
+  <action name="Execute">
+    <execute>$0</execute>
+  </action>
+</item>
+endsnippet

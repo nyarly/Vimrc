@@ -47,11 +47,16 @@ module Vim
         Vim::message("Checking if #{@parsed[:pid]} is running...")
         Process::kill(0, @parsed[:pid])
         Vim::message("#{@parsed[:pid]} is running.")
-        return true
+        if File::read("/proc/#{@parsed[:pid]}/cmdline") =~ /\b[erg]?(vim(?:diff)?|view|ex(?:im)?)\b/
+          return true
+        else
+          Vim::message("#{@parsed[:pid]} is not vim")
+          return false
+        end
       rescue Errno::ESRCH
         Vim::message("#{@parsed[:pid]} is not running.")
         return false
-      rescue ex
+      rescue => ex
         Vim::message("Problem: #{ex.inspect}")
         return true
       end
