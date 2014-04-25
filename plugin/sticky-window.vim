@@ -58,14 +58,15 @@ endfunction
 let s:gem_dir = "/home/judson/ruby/bundle-paths/rails3/lib/ruby/1.9.1/gems"
 
 let s:role_patterns = [
+\  [  'UltiSnips\|Gundo',                             "",              'SAME'    ],
 \  [  '.*\.gemspec$\|.*/Gemfile$\|.*/Gemfile.lock$',  'rubygem',       ''        ],
 \  [  '\u\+\(\.[^/]*\)\?$',                           'doc',           ''        ],
-\  [  "^".$PWD.'/\(spec\|test\)/',                    'test',          'sticky'  ],
+\  [  "^".$PWD.'.*/\(spec\|test\)/',                  'test',          'sticky'  ],
 \  [  "^".$PWD.'/app/\(views\|assets/stylesheets\)',  'views',         'sticky'  ],
 \  [  "^".$PWD,                                       "app",           "sticky"  ],
 \  [  "^".$HOME."/.vim",                              "vim_config",    ''        ],
 \  [  "^".$HOME."/bin",                               "tool_scripts",  ''        ],
-\  [  '.*ruby/.*\d[.]\d[.]\d.*/gems.*',                   "gem_review",    ''        ],
+\  [  '.*ruby/.*\d[.]\d[.]\d.*/gems.*',               "gem_review",    ''        ],
 \  [  '.*\.java$',                                    'java',          ''        ],
 \  [  '.*',                                           'unknown',       ''        ]
 \]
@@ -75,8 +76,12 @@ function! s:PathToRole(path)
   "echom "Finding role for: " . path
   for role in s:role_patterns
     if(path =~ role[0])
-      echom "Matched ".role[0]. " - role is: ".role[1]
-      return role[1]
+      let role_is = role[1]
+      if(role[2] == "SAME")
+        let role_is = g:vwrole
+      endif
+      "echom "Matched ".role[0]. " - role is: ".role[1]
+      return role_is
     endif
   endfor
   echom "Couldn't find a role - using 'unknown'"
@@ -90,11 +95,11 @@ function! s:FilterFiles()
 
   let path = expand('%:p')
   let path_role = s:PathToRole(path)
-
   if( g:vwrole != l:path_role )
+    echom "Path: ".path
     echom "File doesn't belong in this editor - reopening in [".path_role."]"
 
-    let vw_output = system("vw ".path." ".path_role)
+    let vw_output = system("vw -r ".path_role." ".path)
     if( v:shell_error == 0 )
       let b:rejected=1
       setlocal noswapfile

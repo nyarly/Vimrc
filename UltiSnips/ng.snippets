@@ -1,0 +1,25 @@
+snippet ctrl "Modularized Controller" !b
+angular.module( '${1}.${2}', [
+	'ui.router'
+]).config(function config( $stateProvider ) {
+	$stateProvider.state( '$2', {
+		url: '/$2',
+		views: {
+			"main": {
+				controller: '${3:$1/^./\u$0/}',
+				templateUrl: '$2/$2.tpl.html'
+			}
+		},
+		data:{ pageTitle: 'Home' }
+	});
+}).controller( '$3', function ( $scope ) {
+	$0
+});
+endsnippet
+
+snippet service "Modularized Service" !b
+angular.module( '$1', [
+]).factory('User', function($2){
+	$0
+});
+endsnippet

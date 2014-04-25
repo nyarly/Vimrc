@@ -9,4 +9,6 @@ tags
 .netrwhist
 Powerline_distinguished_distinguished_*
 problem_files/
+bundle/**
+!bundle/vundle
 bundle/

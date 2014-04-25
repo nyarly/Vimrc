@@ -118,7 +118,7 @@ snippet iof "iof"
 io:format("${1:string}~n", [${2:values}])${3},
 endsnippet
 
-snippet funspec "Function doc header"
+snippet funspec "function() doc header"
 %%--------------------------------------------------------------------
 %% @doc:	${1:desription}
 %% @spec:	${2:function}() -> ${3:return type}.
@@ -134,6 +134,9 @@ snippet funspec "function(X) doc header"
 %% @end
 %%--------------------------------------------------------------------
 -spec($2($4) -> $5 ).
+
+$2($3) ->
+	${0:ok}.
 endsnippet
 
 snippet fun "anonymous"
@@ -141,7 +144,7 @@ fun(${1:arg}) -> ${2:body} end
 endsnippet
 
 snippet if "if"
-if 
+if
 	${1:guard} ->
 		${2:action}
 end
@@ -179,7 +182,7 @@ snippet recv "receive after"
 receive
 	${1:pattern1} ->
 		${2:expr1}
-after 
+after
 	${3:Timeout} ->
 		${4:expr2}
 end
@@ -255,13 +258,13 @@ endsnippet
 
 snippet otp "gen_server"
 -module(`!v Filename()`).
--behaviour(gen_server).
+-behavior(gen_server).
 %% API
 -export([start_link/0]).
 %% gen_server callbacks
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
 	terminate/2, code_change/3]).
--define(SERVER, ?MODULE). 
+-define(SERVER, ?MODULE).
 -record(state, {}).
 start_link() ->
 	gen_server:start_link({local, ?SERVER}, ?MODULE, [], []).
@@ -286,46 +289,74 @@ code_change(_OldVsn, State, _Extra) ->
 %%%===================================================================
 endsnippet
 
-snippet otp "gen_event"
+snippet otp "gen_event_listener"
 %%%-------------------------------------------------------------------
 %%% @author  `!v g:snips_author` `!v g:my_email_addr`
 %%% @copyright (C) `!v strftime("%Y")` `!v g:snips_author`. All Rights Reserved.
 %%% @doc
-%%%		${1}
+%%%   ${1}
 %%% @end
 %%% Created :  `!v strftime("%a %b %d %H:%M:%S %Y")` by `!v g:snips_author`
 %%%-------------------------------------------------------------------
+
 -module(`!v Filename()`).
--behaviour(gen_event).
+-behavior(gen_event).
+
 %% API
--export([start_link/0, add_handler/0]).
+-export([add_to/1, add_to/2, add_to_sup/1, add_to_sup/2]).
+
 %% gen_event callbacks
--export([init/1, handle_event/2, handle_call/2, 
+-export([init/1, handle_event/2, handle_call/2,
 	handle_info/2, terminate/2, code_change/3]).
--define(SERVER, ?MODULE). 
+
 -record(state, {}).
+
 %%%===================================================================
 %%% Module API
 %%%===================================================================
-start_link() ->
-	gen_event:start_link({local, ?SERVER}).
-add_handler() ->
-	gen_event:add_handler(?SERVER, ?MODULE, []).
+add_to(Server) ->
+	add_to(Server, []).
+
+add_to(Server, Args) ->
+	Handler = {?MODULE, make_ref()},
+	gen_event:add_handler(Server, ?MODULE, Args),
+	Handler.
+
+add_to_sup(Server) ->
+	add_to_sup(Server, []).
+
+add_to_sup(Server, Args) ->
+	Handler = {?MODULE, make_ref()},
+	gen_event:add_sup_handler(Server, ?MODULE, Args),
+	Handler.
+
 %%%===================================================================
 %%% gen_event callbacks
 %%%===================================================================
 init([]) ->
 	{ok, #state{}}.
+
 handle_event(_Event, State) ->
 	{ok, State}.
+
+handle_call(_Request, State) ->
 	Reply = ok,
 	{ok, Reply, State}.
+
 handle_info(_Info, State) ->
 	{ok, State}.
+
 terminate(_Reason, _State) ->
 	ok.
+
 code_change(_OldVsn, State, _Extra) ->
 	{ok, State}.
+
+%format_status(normal, [PDict, State]) ->
+%	Status;
+%format_status(terminate, [PDict, State]) ->
+%	Status.
+
 %%%===================================================================
 %%% Internal functions
 %%%===================================================================
@@ -341,7 +372,7 @@ snippet otp "gen_fsm"
 %%% Created :  `!v strftime("%a %b %d %H:%M:%S %Y")` by `!v g:snips_author`
 %%%-------------------------------------------------------------------
 -module(`!v Filename()`).
--behaviour(gen_fsm).
+-behavior(gen_fsm).
 %% API
 -export([start_link/0]).
 %% gen_fsm callbacks
@@ -390,7 +421,7 @@ snippet otp "supervisor"
 %%% Created :  `!v strftime("%a %b %d %H:%M:%S %Y")` by `!v g:snips_author`
 %%%-------------------------------------------------------------------
 -module(`!v Filename()`).
--behaviour(supervisor).
+-behavior(supervisor).
 %% API
 -export([start_link/0]).
 %% Supervisor callbacks
@@ -430,7 +461,7 @@ snippet otp "supervisor_bridge"
 %%% Created :  `!v strftime("%a %b %d %H:%M:%S %Y")` by `!v g:snips_author`
 %%%-------------------------------------------------------------------
 -module(`!v Filename()`).
--behaviour(supervisor_bridge).
+-behavior(supervisor_bridge).
 %% API
 -export([start_link/0]).
 %% supervisor_bridge callbacks
@@ -470,7 +501,8 @@ snippet otp "application"
 %%% Created :  `!v strftime("%a %b %d %H:%M:%S %Y")` by `!v g:snips_author`
 %%%-------------------------------------------------------------------
 -module(`!v Filename()`).
--behaviour(application).
+-behavior(application).
+
 %% Application callbacks
 -export([start/2, stop/1]).
 %%%===================================================================
@@ -545,6 +577,15 @@ code_change(_OldVsn, State, _Extra) ->
 %%%===================================================================
 endsnippet
 
+snippet fsm_state "An OTP FSM state handling pair" !b
+${1:state_name}(_Event, State) ->
+  {next_state, ${2:$1}, State}.
+
+$1(_Event, _From, State) ->
+  Reply = ok,
+  {reply, Reply, ${3:$1}, State}.
+endsnippet
+
 snippet test "small CT suite"
 %%%-------------------------------------------------------------------
 %%% @author  `!v g:snips_author` `!v g:my_email_addr`
@@ -573,11 +614,11 @@ end_per_testcase(_TestCase, _Config) ->
 	ok.
 groups() ->
 	[].
-all() -> 
+all() ->
 	[my_test_case].
-my_test_case() -> 
+my_test_case() ->
 	[].
-my_test_case(_Config) -> 
+my_test_case(_Config) ->
 	ok.
 endsnippet
 
@@ -613,14 +654,14 @@ end_per_testcase(_TestCase, _Config) ->
 	ok.
 groups() ->
 	[].
-all() -> 
+all() ->
 	[my_test_case].
 %%--------------------------------------------------------------------
 %% TEST CASES
 %%--------------------------------------------------------------------
-my_test_case() -> 
+my_test_case() ->
 	[].
-my_test_case(_Config) -> 
+my_test_case(_Config) ->
 	ok.
 endsnippet
 
@@ -650,16 +691,16 @@ end_per_testcase(_TestCase, _Config) ->
 	ok.
 all(doc) ->
 	["Describe the main purpose of this suite"];
-all(suite) -> 
+all(suite) ->
 	[a_test_case].
 %%--------------------------------------------------------------------
 %% TEST CASES
 %%--------------------------------------------------------------------
-a_test_case(doc) -> 
+a_test_case(doc) ->
 	["Describe the main purpose of this test case"];
-a_test_case(suite) -> 
+a_test_case(suite) ->
 	[];
-a_test_case(Config) when is_list(Config) -> 
+a_test_case(Config) when is_list(Config) ->
 	ok.
 endsnippet
 
@@ -668,12 +709,24 @@ snippet test "eunit"
 %%% @author  `!v g:snips_author` `!v g:my_email_addr`
 %%% @copyright (C) `!v strftime("%Y")` `!v g:snips_author`. All Rights Reserved.
 %%% @doc
-%%%		${1}
+%%%   ${1}
 %%% @end
 %%% Created :  `!v strftime("%a %b %d %H:%M:%S %Y")` by `!v g:snips_author`
 %%%-------------------------------------------------------------------
 -module(`!v Filename()`).
 -include_lib("eunit/include/eunit.hrl").
+endsnippet
+
+snippet eunit "EUnit header" !b
+-include_lib("eunit/include/eunit.hrl").
+endsnippet
+
+snippet eunit "EUnit test block" !b
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                        Eunit Test Functions                         %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 endsnippet
 
 snippet wmres "Web Machine resource"

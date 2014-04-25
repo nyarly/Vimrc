@@ -1,17 +1,17 @@
 "
-" Copyright 2006 Tye Zdrojewski 
+" Copyright 2006 Tye Zdrojewski
 "
 " Licensed under the Apache License, Version 2.0 (the "License"); you may not
 " use this file except in compliance with the License. You may obtain a copy of
 " the License at
-" 
+"
 " 	http://www.apache.org/licenses/LICENSE-2.0
-" 
+"
 " Unless required by applicable law or agreed to in writing, software distributed
 " under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
 " CONDITIONS OF ANY KIND, either express or implied. See the License for the
 " specific language governing permissions and limitations under the License.
-" 
+"
 "
 "
 " Script:
@@ -42,7 +42,6 @@
 "
 
 let IndentAnything_Dbg = 0
-let IndentAnything_Dbg = 1
 
 " Only load this indent file when no other was loaded.
 if exists("b:did_indent") && ! IndentAnything_Dbg
@@ -50,16 +49,10 @@ if exists("b:did_indent") && ! IndentAnything_Dbg
 endif
 
 let b:did_indent = 1
+let b:indent_anything_echo = 1
 
 setlocal indentexpr=IndentAnything()
 setlocal indentkeys+=0),0},),;
-
-" Only define the function once.
-if exists("*IndentAnything") && ! IndentAnything_Dbg
-  finish
-endif
-
-setlocal indentexpr=IndentAnything()
 
 """ BEGIN IndentAnything specification
 
@@ -113,4 +106,3 @@ let b:lineContList = [
 "           statement
 "
 let b:contTraversesLineComments = 1
-

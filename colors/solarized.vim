@@ -976,7 +976,7 @@ hi! link pandocMetadataTitle             pandocMetadata
 exe "hi! SignColumn" . s:bg_none
 exe "hi! HitSign" . s:fg_green
 exe "hi! MissSign" . s:fg_red
-exe "hi! IngoreSign" . s:fg_cyan
+exe "hi! IngoredSign" . s:fg_cyan
 "exe "hi! HitLine"
 "exe "hi! MissLine"
 "exe "hi! IgnoreLine"

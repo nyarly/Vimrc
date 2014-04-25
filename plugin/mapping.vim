@@ -1,12 +1,15 @@
 function! s:NonSpecialMappings()
+  nnoremap <buffer> <F3> :<C-U>GundoToggle<CR>
   noremap <buffer> <F4> :<C-U>CtrlPBuffer<CR>
   inoremap <buffer> <F4> <Esc>:<C-U>CtrlPBuffer<CR>
   nnoremap <buffer> <silent> <CR> i<CR><Esc>
-  imap <buffer> <C-L> <Plug>delimitMateJumpMany
+"imap <buffer> <C-L> <Plug>delimitMateJumpMany
   nmap <buffer> <Up> vk
   nmap <buffer> <Down> vj
   nmap <buffer> <Left> <<
   nmap <buffer> <Right> >>
+
+  nmap <buffer> , :<Up><CR> "like . but for commands
 
   vmap <buffer> <Up> <ESC>'>gvk
   vmap <buffer> <Down> <ESC>'<gvj

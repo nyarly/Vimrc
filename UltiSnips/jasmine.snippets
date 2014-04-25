@@ -1,0 +1,137 @@
+snippet aft "aft" !b
+afterEach(function() {
+	${1}
+};
+endsnippet
+
+snippet any "any" !
+jasmine.any(${1})
+endsnippet
+
+snippet bef "bef" !b
+beforeEach(function() {
+	${1}
+});
+endsnippet
+
+snippet des "des" !b
+describe("${1:description}", function() {
+	${2}
+});
+endsnippet
+
+snippet notd "notd" !
+expect(${1:target}).not.toBeDefined();
+endsnippet
+
+snippet notf "notf" !
+expect(${1:target}).not.toBeFalsy();
+endsnippet
+
+snippet notn "notn" !
+expect(${1:target}).not.toBeNull();
+endsnippet
+
+snippet nott "nott" !
+expect(${1:target}).not.toBeTruthy();
+endsnippet
+
+snippet notc "notc" !
+expect(${1:target}).not.toContain(${2:value});
+endsnippet
+
+snippet note "note" !
+expect(${1:target}).not.toEqual(${2:value});
+endsnippet
+
+snippet notm "notm" !
+expect(${1:target}).not.toBeDefined();
+endsnippet
+
+snippet notx "notx" !
+expect(${1:target}).not.${2:toBe($0)};
+endsnippet
+
+snippet ed "ed" !
+expect(${1:target}).toBeDefined();
+endsnippet
+
+snippet ef "ef" !
+expect(${1:target}).toBeFalsy();
+endsnippet
+
+snippet en "en" !
+expect(${1:target}).toBeNull();
+endsnippet
+
+snippet et "et" !
+expect(${1:target}).toBeTruthy();
+endsnippet
+
+snippet ec "ec" !
+expect(${1:target}).toContain(${2:value});
+endsnippet
+
+snippet ee "ee" !
+expect(${1:target}).toEqual(${2:value});
+endsnippet
+
+snippet em "em" !
+expect(${1:target}).toMatch(${2:pattern});
+endsnippet
+
+snippet escw "escw" !
+expect(${1:target}).wasCalledWith(${2:arguments});
+endsnippet
+
+snippet esc "esc" !
+expect(${1:target}).wasCalled();
+endsnippet
+
+snippet notscw "notscw" !
+expect(${1:target}).wasNotCalledWith(${2:arguments});
+endsnippet
+
+snippet notsc "notsc" !
+expect(${1:target}).wasNotCalled();
+endsnippet
+
+snippet ex "ex" !
+expect(${1:target}).${2:toBe($0)};
+endsnippet
+
+snippet it "it" !b
+it("${2:should ${1:do something}}", function() {
+	${3}
+});
+endsnippet
+
+snippet ru "ru" !
+runs(function() {
+	${1}
+});
+endsnippet
+
+snippet scf "scf" !
+spyOn(${1:object}, "${2:method}").andCallFake(${3:function});
+endsnippet
+
+snippet sct "sct" !
+spyOn(${1:object}, "${2:method}").andCallThrough();
+endsnippet
+
+snippet sr "sr" !
+spyOn(${1:object}, "${2:method}").andReturn(${3:arguments});
+endsnippet
+
+snippet st "st" !
+spyOn(${1:object}, "${2:method}").andThrow(${3:exception});
+endsnippet
+
+snippet s "s" !
+spyOn(${1:object}, "${2:method}");
+endsnippet
+
+snippet wa "wa" !
+waits(${1});
+endsnippet

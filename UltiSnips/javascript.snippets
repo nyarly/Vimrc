@@ -6,11 +6,19 @@ function(${3:first_argument}) {
 endsnippet
 
 snippet gp "" b
-goog.provide('${1}');
+goog.provide('${1:`!v substitute(substitute(@", '^\s\+','', ""), '\s\+$', '', "")`}');
 endsnippet
 
 snippet gr "" b
-goog.require('${1}');
+goog.require('${1:`!v substitute(substitute(@", '^\s\+','', ""), '\s\+$', '', "")`}');
+endsnippet
+
+snippet cl "Console logging" !b
+console.log(${1});
+endsnippet
+
+snippet cle "Description" !b
+console.log("`!v expand("%:h:t")`/`!v expand("%:t")`:`!v line(".")`", "${1}", ${2:$1});
 endsnippet
 
 snippet fun "function expression"
@@ -39,6 +47,12 @@ snippet =f "= function" i
 = function(${1:args}){
 	${2}
 };
+endsnippet
+
+snippet iife "Immediately invoked function expression" !b
+;(function(){
+	${1}
+})();
 endsnippet
 
 snippet if "if"

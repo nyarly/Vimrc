@@ -13,6 +13,16 @@ def ${1}
 end
 endsnippet
 
+snippet strong_params "Rails strong params" !b
+def ${1}_params
+	params.require(:$1)
+end
+
+def $1_attrs
+	$1_params.permit ${0:`!v substitute(substitute(@", '^\s\+\(attr_accessible\s*\)\?','', ""), '\s\+$', '', "")`}
+end
+endsnippet
+
 snippet detect "detect"
 detect do |${1:item}|
 	${2}
@@ -23,11 +33,23 @@ snippet vcr "vcr metadata"
 :vcr => {${1}}
 endsnippet
 
+snippet Rld "Rails.logger.debug" b
+Rails.logger.debug{ ${0}.inspect }
+endsnippet
+
+snippet .Rld "tapped Rails logger.debub" i
+.tap{|value| Rails.logger.debug{ "#{__FILE__}:#{__LINE__} => #{${1:value}.inspect}" } }
+endsnippet
+
 snippet pfl "p file,line"
 puts "\n#{__FILE__}:#{__LINE__} => #{${1:nil}.inspect}"
 endsnippet
 
-snippet tpfl "tapped puts with file,line" i
+snippet pdg "p graph dump"
+puts "\n#{__FILE__}:#{__LINE__} => \n#{${1:nil}.dump(${2::ntriples})}"
+endsnippet
+
+snippet .pfl "tapped puts with file,line" i
 .tap{|value| puts "#{__FILE__}:#{__LINE__} => #{${1:value}.inspect}"}
 endsnippet
 

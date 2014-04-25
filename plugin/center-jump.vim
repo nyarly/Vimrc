@@ -1,0 +1,1 @@
+au BufReadPost * normal zz
